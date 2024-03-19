@@ -14,3 +14,4 @@ Then everyone else in the group can clone the repo down and get cracking! Have a
 Don't forget to use good Git technique and co-ordinate with each other to avoid merge conflicts!
 
 Keerthi Mantha
+Denise Siddons
