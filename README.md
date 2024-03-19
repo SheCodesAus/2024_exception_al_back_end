@@ -12,3 +12,5 @@ This repo contains the `.gitignore` and `requirements.txt` you'll need to get st
 Then everyone else in the group can clone the repo down and get cracking! Have a look at the "Project Setup" notes from Thinkific if you need a refresher on how to get started creating the apps you need, and feel free to reach out to mentors for help!
 
 Don't forget to use good Git technique and co-ordinate with each other to avoid merge conflicts!
+
+Keerthi Mantha
