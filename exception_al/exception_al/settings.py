@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'exception_al_back_end.urls'
+ROOT_URLCONF = 'exception_al.urls'
 
 TEMPLATES = [
     {
@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'exception_al_back_end.wsgi.application'
+WSGI_APPLICATION = 'exception_al.wsgi.application'
 
 
 # Database
