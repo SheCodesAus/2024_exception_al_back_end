@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'user.apps.UserConfig',
+    'eoi.apps.EoiConfig',
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.admin',
