@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.admin',
+    'workshops.apps.WorkshopsConfig', # This is the WorkshopsConfig class from the apps.py file
+    'rest_framework', # This is the Django REST framework
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

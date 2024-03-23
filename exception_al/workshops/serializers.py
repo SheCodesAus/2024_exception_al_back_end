@@ -5,12 +5,16 @@ class WorkshopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workshop
         fields = '__all__'  # This will serialize all the fields in the Workshop model
+        extra_kwargs = {
+            'created_by': {'read_only': True},
+            
+        }
 
     # This method will be called when we want to create a new workshop
     def create(self, validated_data):
         request = self.context.get('request')
         user = request.user
-        workshop = Workshop.objects.create(created_by=user, **validated_data)
+        workshop = Workshop.objects.create( **validated_data)
         return workshop
 # This is the serializer for the Workshop model. It will be used to serialize the Workshop model data into JSON format.
 # The WorkshopSerializer class inherits from the ModelSerializer class provided by the Django REST framework.
