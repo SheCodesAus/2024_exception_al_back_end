@@ -32,12 +32,19 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'workshops.apps.WorkshopsConfig', # This is the WorkshopsConfig class from the apps.py file
+    'rest_framework', # This is the Django REST framework
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+AUTH_WORKSHOP_MODEL = 'workshops.CustomWorkshop' # This is the custom Workshop model that we created in the workshops/models.py file
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

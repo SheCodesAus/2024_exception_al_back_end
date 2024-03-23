@@ -1,38 +1,39 @@
-from rest_framework.permissions import IsAuthenticated
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Workshop
 from .serializers import WorkshopSerializer
 from django.http import Http404
-from rest_framework import status
+from rest_framework import status, viewsets
 
 
 # Create your views here.
 # This is the view for creating a new workshop
 
-class WorkshopCreateView(APIView):
-    permission_classes = [IsAuthenticated]
+    
+    
 
-    def post(self, request, format=None):
+    
+    
+# This is the view for getting a list of all workshops
+    
+class WorkshopListView(APIView):
+
+    def get(self, request):
+        workshops = Workshop.objects.all()
+        serializer = WorkshopSerializer(workshops, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
         serializer = WorkshopSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
-# This is the view for getting a list of all workshops
-    
-class WorkshopListView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, format=None):
-        workshops = Workshop.objects.all()
-        serializer = WorkshopSerializer(workshops, many=True)
-        return Response(serializer.data)
+# This is the view for getting a single workshop by id    
 
 class WorkshopDetailView(APIView):
-    permission_classes = [IsAuthenticated]
 
     def get_object(self, request, workshop_id):
         try:
@@ -40,15 +41,31 @@ class WorkshopDetailView(APIView):
         except Workshop.DoesNotExist:
             raise Http404("Workshop does not exist")
 
-    def get(self, request, pk, format=None):
+    def get(self, request, pk):
         workshop = self.get_object(pk)
         serializer = WorkshopSerializer(workshop)
         return Response(serializer.data)
 
-    def put(self, request, pk, format = None):
+    def put(self, request, pk):
         workshop = self.get_object(pk)
         serializer = WorkshopSerializer(workshop, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+# This is the view for getting a list of workshops by category
+    
+class WorkshopViewSet(viewsets.ModelViewSet):
+    queryset = Workshop.objects.all()
+    serializer_class = WorkshopSerializer
+    
+
+    def list(self, request, workshop_category=None):
+        if workshop_category:
+            workshops = Workshop.objects.filter(category=workshop_category)
+        else:
+            workshops = Workshop.objects.all()
+        serializer = WorkshopSerializer(workshops, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
