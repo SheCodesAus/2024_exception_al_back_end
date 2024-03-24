@@ -1,9 +1,41 @@
+# from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import CustomUser
 from .serializers import CustomUserSerializer
+
+class CustomUserRegister (APIView):
+    def post(self, request):
+        serializer = CustomUserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            # token for new user
+            token, created = Token.objects.get_or_create(user=user)
+            response_data = serializer.data
+            response_data.pop('password', None)
+            response_data['token'] = token.key
+            return Response(response_data, status=status.HTTP_201_CREATED)
+        
+        return Response (serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class CustomAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+        })
 
 class CustomUserList (APIView):
     def get(self, request):
