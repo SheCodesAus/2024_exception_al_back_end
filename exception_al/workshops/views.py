@@ -67,20 +67,7 @@ class WorkshopDetailView(APIView):
     
     
 
-class WorkshopDeleteView(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def get_object(self, pk):
-        try:
-            return Workshop.objects.get(pk=pk)
-        except Workshop.DoesNotExist:
-            raise Http404("Workshop does not exist")
-
-    def delete(self, request, pk):
-        workshop = self.get_object(pk)
-        workshop.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)    
-    
    
     
 # This is the view for getting a list of workshops by category
