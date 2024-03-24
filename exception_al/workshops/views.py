@@ -1,4 +1,4 @@
-
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Workshop
@@ -10,14 +10,11 @@ from rest_framework import status, viewsets
 # Create your views here.
 # This is the view for creating a new workshop
 
-    
-    
 
-    
-    
 # This is the view for getting a list of all workshops
     
 class WorkshopListView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         workshops = Workshop.objects.all()
@@ -34,6 +31,7 @@ class WorkshopListView(APIView):
 # This is the view for getting a single workshop by id    
 
 class WorkshopDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self, request, workshop_id):
         try:
@@ -57,6 +55,8 @@ class WorkshopDetailView(APIView):
 # This is the view for getting a list of workshops by category
     
 class WorkshopViewSet(viewsets.ModelViewSet):
+    
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Workshop.objects.all()
     serializer_class = WorkshopSerializer
     
