@@ -32,11 +32,10 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'user.apps.UserConfig',
+    'workshops.apps.WorkshopsConfig', # This is the WorkshopsConfig class from the apps.py file in the workshops app
     'rest_framework',
     'rest_framework.authtoken',
-    'django.contrib.admin',
-    'workshops.apps.WorkshopsConfig', # This is the WorkshopsConfig class from the apps.py file
-    'rest_framework', # This is the Django REST framework
+    'django.contrib.admin',   
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -45,6 +44,7 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'
+                  
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
