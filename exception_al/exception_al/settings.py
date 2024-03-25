@@ -43,11 +43,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+<<<<<<< HEAD
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
+=======
+
+
+>>>>>>> 09fb8f9 ( resolving merge conflict for PR#6)
 
 AUTH_USER_MODEL = 'user.CustomUser'
                   

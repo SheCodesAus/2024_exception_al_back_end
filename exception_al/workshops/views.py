@@ -15,8 +15,7 @@ from rest_framework import status, permissions, viewsets
 # This is the view for getting a list of all workshops
     
 class WorkshopListView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
-
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request):
         workshops = Workshop.objects.all()
         serializer = WorkshopSerializer(workshops, many=True)
@@ -74,7 +73,7 @@ class WorkshopDetailView(APIView):
     
 class WorkshopViewSet(viewsets.ModelViewSet):
     
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Workshop.objects.all()
     serializer_class = WorkshopSerializer
     

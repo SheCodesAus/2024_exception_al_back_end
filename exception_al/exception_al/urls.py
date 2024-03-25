@@ -16,13 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+<<<<<<< HEAD
 from user.views import CustomAuthToken
+=======
+from .views import CustomAuthToken
+>>>>>>> 09fb8f9 ( resolving merge conflict for PR#6)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include ('user.urls')),
+<<<<<<< HEAD
     path('', include('workshops.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api-token-auth/', CustomAuthToken.as_view(), name='api_token_auth')
+=======
+    path('api-auth/', include('rest_framework.urls')), # This includes the rest_framework.urls module in the root URL configuration
+    path('api-token-auth/', CustomAuthToken.as_view(), name='api_token_auth'), # This maps the URL /api-token-auth/ to the CustomAuthToken view
+    
+>>>>>>> 09fb8f9 ( resolving merge conflict for PR#6)
 ]
