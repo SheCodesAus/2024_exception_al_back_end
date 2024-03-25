@@ -4,7 +4,8 @@ from rest_framework.views import APIView
 from .models import Workshop
 from .serializers import WorkshopSerializer
 from django.http import Http404
-from rest_framework import status, viewsets
+from rest_framework import status, permissions, viewsets
+ 
 
 
 # Create your views here.
@@ -14,15 +15,17 @@ from rest_framework import status, viewsets
 # This is the view for getting a list of all workshops
     
 class WorkshopListView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
-
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request):
         workshops = Workshop.objects.all()
         serializer = WorkshopSerializer(workshops, many=True)
         return Response(serializer.data)
+
+
+   
     
     def post(self, request):
-        serializer = WorkshopSerializer(data=request.data)
+        serializer = WorkshopSerializer(data=request.data, context={'request': request} )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -31,7 +34,7 @@ class WorkshopListView(APIView):
 # This is the view for getting a single workshop by id    
 
 class WorkshopDetailView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_object(self, request, workshop_id):
         try:
@@ -56,7 +59,7 @@ class WorkshopDetailView(APIView):
     
 class WorkshopViewSet(viewsets.ModelViewSet):
     
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Workshop.objects.all()
     serializer_class = WorkshopSerializer
     
