@@ -1,3 +1,4 @@
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from .models import CustomUser, Skill, Interest
@@ -36,3 +37,33 @@ class CustomUserSerializer(serializers.ModelSerializer):
         user.profile_image = validated_data.get('profile_image', '')
         user.save()
         return user
+
+# code source modified from https://medium.com/django-rest/django-rest-framework-change-password-and-update-profile-1db0c144c0a3
+    
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    new_password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    new_password2 = serializers.CharField(write_only=True, required=True)
+    password = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ('password', 'new_password', 'new_password2')
+
+    def validate(self, attrs):
+        if attrs['new_password'] != attrs['new_password2']:
+            raise serializers.ValidationError({"password": "Password fields do not match."})
+
+        return attrs
+
+    def validate_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError({"password": "Existing password is not correct"})
+        return value
+
+    def update(self, instance, validated_data):
+
+        instance.set_password(validated_data['password'])
+        instance.save()
+
+        return instance
