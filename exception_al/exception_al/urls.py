@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('workshops.urls')), # This includes the workshops.urls module in the root URL configuration
     path('', include ('user.urls')),
     path('api-auth/', include('rest_framework.urls')), # This includes the rest_framework.urls module in the root URL configuration
+
 ]
