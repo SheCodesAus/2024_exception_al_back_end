@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'user.apps.UserConfig',
     'eoi.apps.EoiConfig',
-    # 'workshops.apps.UserConfig'
+    # 'workshops.apps.WorkshopsConfig',
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.admin',
@@ -51,6 +51,7 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'user.CustomUser'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
