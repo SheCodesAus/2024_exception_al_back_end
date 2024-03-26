@@ -17,7 +17,6 @@ RUN set -ex && \
 
 COPY exception_al/ /code/
 
-ENV SECRET_KEY "ZKevY5lElkbMazacSoeap4n9JB8olmaoWyVmu5cxed9pZQ4GjM"
 RUN python manage.py collectstatic --noinput
 RUN chmod +x /code/run.sh
 
