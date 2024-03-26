@@ -1,23 +1,10 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from .models import CustomUser, Skill, Interest
-
-
-class SkillSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Skill
-        fields = ['id', 'name']
-
-class InterestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Interest
-        fields = ['id', 'name']
+from .models import CustomUser
 
 class CustomUserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(validators=[UniqueValidator(queryset=CustomUser.objects.all())])
-    skills = SkillSerializer(many=True, read_only=True)
-    interests = InterestSerializer(many=True, read_only=True)
     password = serializers.CharField(write_only=True)
     
     class Meta:
@@ -31,7 +18,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
             first_name = validated_data.get('first_name', ''),
             last_name = validated_data.get('last_name', ''),
             email = validated_data['email'],
-            password = validated_data['password']
+            password = validated_data['password'],
+            skills = validated_data['skills'],
+            interests = validated_data['interests']
         )
         user.biography = validated_data.get('biography', '')
         user.profile_image = validated_data.get('profile_image', '')
