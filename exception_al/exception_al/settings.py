@@ -45,6 +45,8 @@ CSRF_TRUSTED_ORIGINS =['https://*.fly.dev']
 
 INSTALLED_APPS = [
     'user.apps.UserConfig',
+    'eoi.apps.EoiConfig',
+    'workshops.apps.WorkshopsConfig',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
@@ -63,6 +65,8 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'user.CustomUser'
+                  
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
