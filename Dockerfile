@@ -1,0 +1,26 @@
+ARG PYTHON_VERSION=3.12-slim-bullseye
+
+FROM python:${PYTHON_VERSION}
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN mkdir -p /code
+
+WORKDIR /code
+
+COPY requirements.txt /tmp/requirements.txt
+RUN set -ex && \
+    pip install --upgrade pip && \
+    pip install -r /tmp/requirements.txt && \
+    rm -rf /root/.cache/
+
+COPY exception_al/ /code/
+
+ENV SECRET_KEY "ZKevY5lElkbMazacSoeap4n9JB8olmaoWyVmu5cxed9pZQ4GjM"
+RUN python manage.py collectstatic --noinput
+RUN chmod +x /code/run.sh
+
+EXPOSE 8000
+
+CMD ["/code/run.sh"]
