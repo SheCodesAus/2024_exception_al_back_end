@@ -5,3 +5,4 @@ class EoiSerializer(serializers.ModelSerializer):
     class Meta:
         model = Eoi
         fields ='__all__'
+

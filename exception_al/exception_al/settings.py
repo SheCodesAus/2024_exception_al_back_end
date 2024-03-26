@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'user.apps.UserConfig',
     'eoi.apps.EoiConfig',
+    # 'workshops.apps.UserConfig'
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.admin',
