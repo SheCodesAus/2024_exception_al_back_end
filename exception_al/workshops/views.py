@@ -1,12 +1,38 @@
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import Workshop
-from .serializers import WorkshopSerializer
+from .serializers import UserSerializer,WorkshopSerializer
 from django.http import Http404
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, permissions
 from .permissions import IsOwnerOrReadOnly
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
+
+class UserViewSet(viewsets.ModelViewSet): 
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAdminUser]  # This will only allow admin users to access the UserViewSet
+
+class WorkshopViewSet(viewsets.ModelViewSet):
+    queryset = Workshop.objects.all()
+    serializer_class = WorkshopSerializer
+
+    def get_permissions(self):
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [permissions.IsAuthenticated, WorkshopPermission()]
+        return [permissions.IsAuthenticated]
+
+class WorkshopPermission(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        # Check if the user is the owner of the workshop or an admin user
+        return( request.user.is_superuser or  obj.created_by == request.user)    
+
  
 # This is the view for getting a list of all workshops
 class WorkshopListView(APIView):

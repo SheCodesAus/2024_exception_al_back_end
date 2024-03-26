@@ -1,5 +1,14 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 from .models import Workshop  # Import the Workshop model from the models.py file
+
+User = get_user_model()
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
 
 class WorkshopSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
