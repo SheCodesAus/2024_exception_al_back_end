@@ -19,11 +19,11 @@ class CustomUserSerializer(serializers.ModelSerializer):
             last_name = validated_data.get('last_name', ''),
             email = validated_data['email'],
             password = validated_data['password'],
-            skills = validated_data['skills'],
-            interests = validated_data['interests']
         )
         user.biography = validated_data.get('biography', '')
         user.profile_image = validated_data.get('profile_image', '')
+        user.skills = validated_data.get('skills', '')
+        user.interests = validated_data.get('interests', '')
         user.save()
         return user
 
