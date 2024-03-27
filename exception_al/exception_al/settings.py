@@ -37,7 +37,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_HEADERS = ['authorization', 'content-type', 'x-csrftoken', 'x-requested-with']
 CSRF_TRUSTED_ORIGINS =['https://*.fly.dev']
 
 
