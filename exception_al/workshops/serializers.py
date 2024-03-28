@@ -16,3 +16,11 @@ def some_view_function(request):
     serializer = WorkshopSerializer(data=request.data, context={'request': request})
     # Rest of your view function code
 
+    created_by = serializers.ReadOnlyField(source='created_by.id')
+    class Meta:
+        model = Workshop
+        fields = '__all__'  # This will serialize all the fields in the Workshop model
+        extra_kwargs = {
+            'created_by': {'read_only': True},
+            
+        }

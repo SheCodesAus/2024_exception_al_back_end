@@ -15,7 +15,8 @@ from rest_framework import status, permissions, viewsets
 # This is the view for getting a list of all workshops
     
 class WorkshopListView(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request):
         workshops = Workshop.objects.all()
         serializer = WorkshopSerializer(workshops, many=True)
@@ -59,6 +60,12 @@ class WorkshopDetailView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    def delete(self, request, pk):
+        workshop = self.get_object(pk)
+        workshop.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    
 
 class WorkshopDeleteView(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -80,7 +87,7 @@ class WorkshopDeleteView(APIView):
     
 class WorkshopViewSet(viewsets.ModelViewSet):
     
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Workshop.objects.all()
     serializer_class = WorkshopSerializer
     
