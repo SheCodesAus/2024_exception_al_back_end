@@ -1,6 +1,7 @@
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
 from .models import Workshop
 from .serializers import WorkshopSerializer
 from django.http import Http404
@@ -21,9 +22,6 @@ class WorkshopListView(APIView):
         serializer = WorkshopSerializer(workshops, many=True)
         return Response(serializer.data)
 
-
-   
-    
     def post(self, request):
         serializer = WorkshopSerializer(data=request.data, context={'request': request} )
         if serializer.is_valid():
@@ -35,7 +33,7 @@ class WorkshopListView(APIView):
 
 class WorkshopDetailView(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
+    parser_classes = (MultiPartParser, FormParser)
     def get_object(self, pk):
         try:
             return Workshop.objects.get(pk=pk)
