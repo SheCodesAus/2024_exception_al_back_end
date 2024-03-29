@@ -7,7 +7,6 @@ class WorkshopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workshop
         fields = '__all__'  # This will serialize all the fields in the Workshop model
-        
 
 def create(self, validated_data):
     return Workshop.objects.create(**validated_data)        
