@@ -16,7 +16,8 @@ from rest_framework import status, permissions, viewsets
 # This is the view for getting a list of all workshops
     
 class WorkshopListView(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request):
         workshops = Workshop.objects.all()
         serializer = WorkshopSerializer(workshops, many=True)
@@ -28,6 +29,9 @@ class WorkshopListView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    
     
 # This is the view for getting a single workshop by id    
 
@@ -47,11 +51,33 @@ class WorkshopDetailView(APIView):
 
     def put(self, request, pk):
         workshop = self.get_object(pk)
-        serializer = WorkshopSerializer(workshop, data=request.data)
+        serializer = WorkshopSerializer(data=request.data, context={'request': request})
+        # serializer = WorkshopSerializer(workshop, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        workshop = self.get_object(pk)
+        workshop.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    
+
+class WorkshopDeleteView(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_object(self, pk):
+        try:
+            return Workshop.objects.get(pk=pk)
+        except Workshop.DoesNotExist:
+            raise Http404("Workshop does not exist")
+
+    def delete(self, request, pk):
+        workshop = self.get_object(pk)
+        workshop.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)    
     
    
     
@@ -59,7 +85,7 @@ class WorkshopDetailView(APIView):
     
 class WorkshopViewSet(viewsets.ModelViewSet):
     
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Workshop.objects.all()
     serializer_class = WorkshopSerializer
     
