@@ -44,15 +44,21 @@ INSTALLED_APPS = [
 ]
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 13c8170 (worked on exception_al_urls, workshop_views.py)
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
+<<<<<<< HEAD
 =======
 
 
 >>>>>>> 09fb8f9 ( resolving merge conflict for PR#6)
+=======
+>>>>>>> 13c8170 (worked on exception_al_urls, workshop_views.py)
 
 AUTH_USER_MODEL = 'user.CustomUser'
                   

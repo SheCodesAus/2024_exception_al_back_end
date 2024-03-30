@@ -5,6 +5,7 @@ from .models import Workshop
 from .serializers import WorkshopSerializer
 from django.http import Http404
 from rest_framework import status, permissions, viewsets
+from permissions import CustomPermission
  
 
 
@@ -25,6 +26,7 @@ class WorkshopListView(APIView):
    
     
     def post(self, request):
+        permissions_classes = [IsAuthenticatedOrReadOnly, CustomPermission]
         serializer = WorkshopSerializer(data=request.data, context={'request': request} )
         if serializer.is_valid():
             serializer.save()
@@ -53,7 +55,6 @@ class WorkshopDetailView(APIView):
     def put(self, request, pk):
         workshop = self.get_object(pk)
         serializer = WorkshopSerializer(data=request.data, context={'request': request})
-        # serializer = WorkshopSerializer(workshop, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
