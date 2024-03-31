@@ -7,7 +7,7 @@ class CustomUser(AbstractUser):
     last_name = models.CharField(max_length=100)
     email = models.EmailField(max_length=256, unique=True, verbose_name='email')
     biography = models.TextField(blank=True)
-    profile_image = models.URLField(blank=True)
+    profile_image = models.ImageField(upload_to='user_images', blank=True, null=True)
     skills = models.CharField(max_length=1000, default="")
     interests = models.CharField(max_length=1000, default="")
 
