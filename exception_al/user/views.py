@@ -62,6 +62,16 @@ class CustomUserDetail (APIView):
         serializer = CustomUserSerializer(user)
         return Response(serializer.data)
     
+    def put(self, request, pk):
+        user = self.get_object(pk)
+        serializer = CustomUserSerializer(
+            instance=user,
+            data=request.data,
+            partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data, status.HTTP_200_OK)
 class ChangePasswordView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
     permission_classes = (IsAuthenticated,)
