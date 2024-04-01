@@ -13,4 +13,5 @@ jobs:
     - run: flyctl deploy --remote-only
       env:
         FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-    - run: ./create_superuser.sh
+    - name: Create superuser
+      run: cd ../../exception_al && ./create_superuser.sh
