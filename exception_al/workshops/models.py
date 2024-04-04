@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 class Workshop(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    image = models.ImageField(upload_to='workshop_images', blank=True, null=True)
+    image = models.URLField(blank=True, null=True)
     category = models.CharField(max_length=255)
     planned_date = models.DateField(null=True, blank=True)
     closing_date = models.DateField()
