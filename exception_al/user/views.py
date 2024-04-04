@@ -5,8 +5,9 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
+from rest_framework.generics import UpdateAPIView
 from .models import CustomUser
-from .serializers import CustomUserSerializer, ChangePasswordSerializer
+from .serializers import CustomUserSerializer, ChangePasswordSerializer, UpdateProfileSerializer
 
 class CustomUserRegister (APIView):
     def post(self, request):
@@ -69,6 +70,7 @@ class CustomUserDetail (APIView):
         if serializer.is_valid():
             serializer.save()
         return Response(serializer.data, status.HTTP_200_OK)
+
 class ChangePasswordView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
     permission_classes = (IsAuthenticated,)
@@ -78,7 +80,6 @@ class ChangePasswordView(generics.UpdateAPIView):
         return self.request.user
 
 # update authenticated user password
-    
     def perform_update(self, serializer):
         user=self.get_object()
         serializer.save()
@@ -93,3 +94,14 @@ class ChangePasswordView(generics.UpdateAPIView):
             token, created = Token.objects.get_or_create(user=self.get_object())
             response.data['token'] = token.key
         return response 
+    
+class UpdateProfileView (UpdateAPIView):
+    queryset = CustomUser.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UpdateProfileSerializer
+
+    def get_object(self):
+        return self.request.user
+    
+    def update (self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
