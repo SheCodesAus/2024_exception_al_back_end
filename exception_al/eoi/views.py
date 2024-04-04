@@ -16,7 +16,7 @@ class EoiList(APIView):
     def post(self, request):
         serializer = EoiSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(owner=request.user)
+            serializer.save(user=request.user)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
