@@ -8,9 +8,7 @@ class Eoi(models.Model):
         ('Attend', 'Attend'),
         ('Mentor', 'Mentor'),
     )
-
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='eois')
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE, related_name='eois')
     eoi_type = models.CharField(max_length=10, choices=TYPE_CHOICES, default="Attend")
     comment = models.TextField(null=True, blank=True)
