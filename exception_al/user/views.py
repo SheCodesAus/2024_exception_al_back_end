@@ -72,6 +72,7 @@ class CustomUserDetail (APIView):
         if serializer.is_valid():
             serializer.save()
         return Response(serializer.data, status.HTTP_200_OK)
+
 class ChangePasswordView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
     permission_classes = (IsAuthenticated,)
@@ -81,7 +82,6 @@ class ChangePasswordView(generics.UpdateAPIView):
         return self.request.user
 
 # update authenticated user password
-    
     def perform_update(self, serializer):
         user=self.get_object()
         serializer.save()
@@ -96,3 +96,19 @@ class ChangePasswordView(generics.UpdateAPIView):
             token, created = Token.objects.get_or_create(user=self.get_object())
             response.data['token'] = token.key
         return response 
+    
+class DeleteProfileView (APIView):
+    permission_classes = (IsAuthenticated,)
+    
+    def get_object(self, pk):
+        try:
+            return CustomUser.objects.get(pk=pk)
+        except CustomUser.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, pk, format=None):
+        user = self.get_object(pk)
+        if request.user != user and not request.user.is_superuser:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
