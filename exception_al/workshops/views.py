@@ -1,7 +1,6 @@
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.parsers import MultiPartParser, FormParser
 from .models import Workshop
 from .serializers import UserSerializer,WorkshopSerializer
 from django.http import Http404
@@ -44,9 +43,9 @@ class WorkshopListView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = WorkshopSerializer(data=request.data, context={'request': request} )
+        serializer = WorkshopSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(created_by=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -57,7 +56,6 @@ class WorkshopListView(APIView):
 
 class WorkshopDetailView(APIView):
     permission_classes = [IsOwnerOrReadOnly]
-    parser_classes = (MultiPartParser, FormParser)
     def get_object(self, pk):
         try:
             workshop = Workshop.objects.get(pk=pk)
@@ -70,16 +68,7 @@ class WorkshopDetailView(APIView):
         workshop = self.get_object(pk)
         serializer = WorkshopSerializer(workshop)
         return Response(serializer.data)
-# TODO: Need to create WorkshopDetailSerializer
-    # def put(self, request, pk):
-    #     workshop = self.get_object(pk)
-    #     serializer = WorkshopSerializer(data=request.data, context={'request': request})
-    #     # serializer = WorkshopSerializer(workshop, data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request, pk):
         workshop = self.get_object(pk)
         workshop.delete()
