@@ -93,3 +93,12 @@ class ChangePasswordView(generics.UpdateAPIView):
             token, created = Token.objects.get_or_create(user=self.get_object())
             response.data['token'] = token.key
         return response 
+
+class CheckUsernameView(APIView):
+    def get(self, request):
+        username = request.query_params.get('username', None)
+        if not username:
+            return Response({'error': 'Username parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user_exists = CustomUser.objects.filter(username=username).exists()
+        return Response({'username_exists': user_exists})
