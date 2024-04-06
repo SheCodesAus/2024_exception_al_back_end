@@ -6,7 +6,7 @@ from .models import Workshop
 from .serializers import WorkshopSerializer
 from django.http import Http404
 from rest_framework import status, viewsets
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsSuperuserOrOwnerOrReadOnly
  
 # This is the view for getting a list of all workshops
 class WorkshopListView(APIView):
@@ -30,7 +30,7 @@ class WorkshopListView(APIView):
 # This is the view for getting a single workshop by id    
 
 class WorkshopDetailView(APIView):
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsSuperuserOrOwnerOrReadOnly]
     parser_classes = (MultiPartParser, FormParser)
     def get_object(self, pk):
         try:
