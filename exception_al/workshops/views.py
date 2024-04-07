@@ -42,6 +42,17 @@ class WorkshopDetailView(APIView):
         workshop = self.get_object(pk)
         serializer = WorkshopSerializer(workshop)
         return Response(serializer.data)
+    
+    def put(self, request, pk):
+        workshop = self.get_object(pk)
+        serializer = WorkshopSerializer(
+            instance=workshop,
+            data=request.data,
+            partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data, status.HTTP_200_OK)
 
     def delete(self, request, pk):
         workshop = self.get_object(pk)
