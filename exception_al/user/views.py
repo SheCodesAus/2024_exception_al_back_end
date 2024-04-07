@@ -29,9 +29,13 @@ class CustomAuthToken(ObtainAuthToken):
         user = serializer.validated_data['user']
         user_serializer = CustomUserSerializer(user)
         token, created = Token.objects.get_or_create(user=user)
+        is_superuser = False
+        if user.is_authenticated:
+            is_superuser = user.is_superuser
         return Response({
             'token': token.key,
-            'user': user_serializer.data
+            'user': user_serializer.data,
+            'is_superuser': is_superuser
         })
 
 class CustomUserList (APIView):
