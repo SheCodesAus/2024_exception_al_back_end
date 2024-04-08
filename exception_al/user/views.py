@@ -113,5 +113,5 @@ class CheckEmailView(APIView):
         if not email:
             return Response({'error': 'Email parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
         
-        user_exists = CustomUser.objects.filter(eamil=email).exists()
+        user_exists = CustomUser.objects.filter(email=email).exists()
         return Response({'email_exists': user_exists})
