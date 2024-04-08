@@ -106,3 +106,12 @@ class CheckUsernameView(APIView):
         
         user_exists = CustomUser.objects.filter(username=username).exists()
         return Response({'username_exists': user_exists})
+    
+class CheckEmailView(APIView):
+    def get(self, request):
+        email = request.query_params.get('email', None)
+        if not email:
+            return Response({'error': 'Email parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user_exists = CustomUser.objects.filter(eamil=email).exists()
+        return Response({'email_exists': user_exists})
